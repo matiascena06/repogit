@@ -6,8 +6,8 @@ body {
     line-height: 1.7;
 }
 
-#navbar {
-    background: #16161a;
+.navbar {
+    background: #16161a !important;
     border-bottom: 1px solid #2e2e38;
     padding: 1rem 2rem;
     position: sticky;
@@ -16,7 +16,7 @@ body {
 }
 
 .navbar-brand {
-    color: #212028 !important;
+    color: #f0eff5 !important;
     font-size: 1.3rem;
     font-weight: 700;
 }
@@ -26,8 +26,9 @@ body {
     transition: color 0.2s;
 }
 
-.nav-link:hover {
-    color: #212123 !important;
+.nav-link:hover,
+.nav-link.active {
+    color: #f0eff5 !important;
 }
 
 .dropdown-menu {
@@ -42,4 +43,96 @@ body {
 .dropdown-item:hover {
     background: #2e2e38;
     color: #f0eff5;
+}
+
+#header {
+    padding: 100px 2rem;
+    text-align: center;
+}
+
+.container-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.container-header h1 .result {
+    color: #7c6af7;
+}
+
+.container-header p {
+    color: #7a7a90;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.btn-principal {
+    background: #7c6af7;
+    color: #fff;
+    padding: 0.75rem 1.75rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s;
+    display: inline-block;
+}
+
+.btn-principal:hover {
+    background: #6353d4;
+    color: #fff;
+}
+
+#team {
+    padding: 80px 2rem;
+    text-align: center;
+}
+
+.container-team h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    color: #f0eff5;
+}
+
+.container-members {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.team-member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #1e1e24;
+    border: 2px solid #7c6af7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7c6af7;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.team-members p {
+    color: #f0eff5;
+    font-weight: 500;
+    margin: 0;
+}
+
+footer {
+    background: #16161a;
+    border-top: 1px solid #2e2e38;
+    padding: 1rem 2rem;
+    text-align: right;
+    color: #8a8a9f;
+    font-size: 1rem;
 }
