@@ -1,4 +1,45 @@
-head{
-    background-color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
+body {
+    background: #0d0d0f;
+    color: #f0eff5;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+#navbar {
+    background: #16161a;
+    border-bottom: 1px solid #2e2e38;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar-brand {
+    color: #212028 !important;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.nav-link {
+    color: #7a7a90 !important;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: #212123 !important;
+}
+
+.dropdown-menu {
+    background: #1e1e24;
+    border: 1px solid #2e2e38;
+}
+
+.dropdown-item {
+    color: #7a7a90;
+}
+
+.dropdown-item:hover {
+    background: #2e2e38;
+    color: #f0eff5;
 }
