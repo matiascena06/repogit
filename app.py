@@ -1,9 +1,14 @@
-from flask import Flask, render_template
-import pandas as pd
-import sqlalchemy
+from flask import Flask, render_template, request, redirect
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use("Agg")
+import pandas
 
 app = Flask(__name__)
-db_path = 'database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
+db = SQLAlchemy(app)
 
 @app.route('/')
 def index():
