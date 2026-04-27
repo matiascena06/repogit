@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 import pandas as pd
-import sqlite3
+import sqlalchemy
 
 app = Flask(__name__)
 db_path = 'database.db'
