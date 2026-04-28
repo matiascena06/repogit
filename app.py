@@ -1,61 +1,145 @@
 from flask import Flask, render_template
 import pandas as pd
 import sqlite3
-import matplotlib
 import matplotlib.pyplot as plt
 import os
-matplotlib.use("Agg")
 
 app = Flask(__name__)
-db_path = 'instance/database.db'
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB = 'database.db'
 
 def init_db():
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(DB)
     cursor = conn.cursor()
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS registros (
             Role_ID TEXT,
             Industry TEXT,
             Human_Labor_Cost_hr REAL,
-            Tokens_per_Human_Hour REAL,
-            Inference_Cost_2026 REAL,
-            Agent_Labor_Equivalent_Cost REAL,
-            Substitution_Elasticity REAL,
-            AI_Augmentation_Factor REAL,
-            Automation_Risk_Index REAL,
-            Hardware_CapEx_Sensitivity REAL,
-            Regulatory_Moat REAL,
-            Substitution_Year_Est INTEGER
+            Tokens_per_Human_Hour REAL
         )
     ''')
+
     conn.commit()
     conn.close()
 
-def insertar_datos():
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM registros")
-    if cursor.fetchone()[0] == 0:
-        df = pd.read_csv(os.path.join(BASE_DIR, 'data', 'labor_substitution.csv'))
-        df.to_sql('registros', conn, if_exists='append', index=False)
+def cargar_datos():
+    conn = sqlite3.connect(DB)
+
+    df = pd.read_csv('data/labor_substitution.csv')
+    df = df[['Role_ID', 'Industry', 'Human_Labor_Cost_hr', 'Tokens_per_Human_Hour', 'Inference_Cost_2026' , 'Agent_Labor_Equivalent_Cost', 'Substitution_Elasticity', 'AI_Augmentation_Factor', 'Automation_Risk_Index', 'Hardware_CapEx_Sensitivity', 'Regulatory_Moat', 'Substitution_Year_Est']]
+
+    df.to_sql('registros', conn, if_exists='replace', index=False)
     conn.close()
+
+def generar_grafico1():
+    conn = sqlite3.connect(DB)
+    df = pd.read_sql_query("SELECT * FROM registros", conn)
+    conn.close()
+
+    df_top = df.sort_values(by='Human_Labor_Cost_hr', ascending=False).head(10)
+
+    plt.figure(figsize=(10,5))
+    plt.bar(df_top['Role_ID'], df_top['Human_Labor_Cost_hr'])
+    plt.xticks(rotation=45, ha='right')
+    plt.title("Top 10 trabajos con mayor costo laboral")
+
+    os.makedirs('static', exist_ok=True)
+    plt.savefig('static/grafico1.png', bbox_inches='tight')
+    plt.close()
+
+def generar_grafico2():
+    conn = sqlite3.connect(DB)
+    df = pd.read_sql_query("SELECT * FROM registros", conn)
+    conn.close()
+
+    df_group = df.groupby('Industry')['Human_Labor_Cost_hr'].mean().sort_values(ascending=False).head(10)
+
+    plt.figure(figsize=(10,5))
+    df_group.plot(kind='bar')
+    plt.title("Costo promedio por industria")
+
+    plt.savefig('static/grafico2.png', bbox_inches='tight')
+    plt.close()
+
+def generar_grafico_reemplazo_tiempo():
+    conn = sqlite3.connect(DB)
+    df = pd.read_sql_query("SELECT * FROM registros", conn)
+    conn.close()
+
+    df = df.dropna(subset=['Substitution_Year_Est', 'Automation_Risk_Index'])
+
+    plt.figure(figsize=(10,5))
+    plt.title("Estimación de reemplazo de trabajos en el tiempo")
+    plt.xlabel("Año")
+    plt.ylabel("Nivel de reemplazo (estimado)")
+
+    plt.savefig('static/grafico3.png', bbox_inches='tight')
+    plt.close()
+
+def generar_grafico_area_tiempo():
+    conn = sqlite3.connect(DB)
+    df = pd.read_sql_query("SELECT * FROM registros", conn)
+    conn.close()
+
+    df = df.dropna(subset=['Substitution_Year_Est', 'Automation_Risk_Index'])
+
+    df_group = df.groupby(['Substitution_Year_Est', 'Industry'])['Automation_Risk_Index'].sum().unstack().fillna(0)
+
+    df_group.plot(figsize=(10,6))
+    plt.title("Reemplazo por industria en el tiempo")
+    plt.xlabel("Año")
+    plt.ylabel("Nivel de reemplazo")
+
+    plt.savefig('static/grafico4.png', bbox_inches='tight')
+    plt.close()
+
+def generar_grafico_costo_comparacion():
+    conn = sqlite3.connect(DB)
+    df = pd.read_sql_query("SELECT * FROM registros", conn)
+    conn.close()
+
+    df_sample = df.head(10)
+
+    x = range(len(df_sample))
+
+    plt.figure(figsize=(10,5))
+    plt.bar(x, df_sample['Human_Labor_Cost_hr'], width=0.4, label='Humano')
+    plt.bar([i + 0.4 for i in x], df_sample['Agent_Labor_Equivalent_Cost'], width=0.4, label='IA')
+
+    plt.xticks([i + 0.2 for i in x], df_sample['Role_ID'], rotation=45, ha='right')
+    plt.legend()
+    plt.title("Costo humano vs IA")
+
+    plt.savefig('static/grafico5.png', bbox_inches='tight')
+    plt.close()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    conn = sqlite3.connect(DB)
+    df = pd.read_sql_query("SELECT * FROM registros LIMIT 10", conn)
 
-@app.route('/datos')
-def datos():
-    conn = sqlite3.connect(db_path)
-    df = pd.read_sql_query("SELECT * FROM registros", conn)
+    promedio = df['Human_Labor_Cost_hr'].mean()
+    maximo = df['Human_Labor_Cost_hr'].max()
+    minimo = df['Human_Labor_Cost_hr'].min()
+
     conn.close()
-    return df.to_json(orient='records') 
 
+    return render_template(
+        'index.html',
+        tabla=df.to_html(classes='tabla'),
+        promedio=round(promedio, 2),
+        maximo=round(maximo, 2),
+        minimo=round(minimo, 2)
+    )
 
 if __name__ == '__main__':
     init_db()
-    insertar_datos()
+    cargar_datos()
+    generar_grafico1()
+    generar_grafico2()
+    generar_grafico_reemplazo_tiempo()
+    generar_grafico_area_tiempo()
+    generar_grafico_costo_comparacion()
     app.run(debug=True)
-    

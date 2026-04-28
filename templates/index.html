@@ -1,78 +1,54 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=>, initial-scale=1.0">
-    <title> No hace falta que lo sepan </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Impacto de la IA en el Trabajo</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">IA vs Humano</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Más info</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#graficos">Link 1</a></li>
-                            <li><a class="dropdown-item" href="#datos">Link 2</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#equipo">Nuestro equipo</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">¿No disponible? Error 67</a>
-                    </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-     <section id="header">
-        <div class="container-header">
-            <h1><span class="result">Análisis de datos</span></h1>
-            <p>Todavia no tenemos tema, ayuda</p>
-            <a href="#datos" class="btn-principal">Ver análisis (decime un temita)</a>
-        </div>
-    </section>
-    <section id="team">
-        <div class="container-team">
-            <h2>El dream team</h2>
-            <div class="container-members">
-                <div class="team-member">
-                    <div class="avatar">Avatar</div>
-                    <p>Polo</p>
-                </div>
-                <div class="team-member">
-                    <div class="avatar">Avatar</div>
-                    <p>Pedro</p>
-                </div>
-                <div class="team-member">
-                    <div class="avatar">Avatar</div>
-                    <p>Mati</p>
-                </div>
-            </div>
-        </div>
-    </section>
-<footer>
-    <div class="container-footer">
-        <p>Copyright © 2026 No hace falta que lo sepan - Taller de internet</p>
+
+<div class="container">
+
+    <h1>Impacto de la IA en el Trabajo Humano</h1>
+
+    <p class="descripcion">
+        Este proyecto analiza cómo el costo del trabajo humano puede influir en su posible
+        reemplazo por inteligencia artificial.
+    </p>
+
+    <h2>Tabla de datos</h2>
+    <div class="tabla-container">
+        {{ tabla | safe }}
     </div>
-</footer>
+
+    <h2>Análisis</h2>
+    <p><b>Este es el promedio de costo por trabajador:</b> {{ promedio }}</p>
+    <p><b>Máximo:</b> {{ maximo }}</p>
+    <p><b>Mínimo:</b> {{ minimo }}</p>
+
+    <h2>Gráfico 1</h2>
+    <img src="{{ url_for('static', filename='grafico1.png') }}">
+
+    <h2>Gráfico 2</h2>
+    <img src="{{ url_for('static', filename='grafico2.png') }}">
+
+    <h2>Gráfico 3</h2>
+    <img src="{{ url_for('static', filename='grafico3.png') }}">
+
+    <h2>Gráfico 4</h2>
+    <img src="{{ url_for('static', filename='grafico4.png') }}">
+
+    <h2>Gráfico 5</h2>
+    <img src="{{ url_for('static', filename='grafico5.png') }}">
+
+    <h2>Conclusión</h2>
+    <p class="descripcion">
+        Los trabajos con mayor costo laboral representan un mayor gasto para las empresas,
+        lo que los convierte en candidatos más probables para ser reemplazados por inteligencia
+        artificial. Además, ciertas industrias concentran estos costos, mostrando dónde el impacto
+        de la automatización podría ser mayor.
+    </p>
+
+</div>
+
 </body>
 </html>
