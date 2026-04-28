@@ -19,6 +19,15 @@ def init_db():
             Role_ID TEXT,
             Industry TEXT,
             Human_Labor_Cost_hr REAL,
+            Tokens_per_Human_Hour REAL,
+            Inference_Cost_2026 REAL,
+            Agent_Labor_Equivalent_Cost REAL,
+            Substitution_Elasticity REAL,
+            AI_Augmentation_Factor REAL,
+            Automation_Risk_Index REAL,
+            Hardware_CapEx_Sensitivity REAL,
+            Regulatory_Moat REAL,
+            Substitution_Year_Est INTEGER
         )
     ''')
     conn.commit()
@@ -28,7 +37,9 @@ def insertar_datos():
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM registros")
-   
+    if cursor.fetchone()[0] == 0:
+        df = pd.read_csv(os.path.join(BASE_DIR, 'data', 'labor_substitution.csv'))
+        df.to_sql('registros', conn, if_exists='append', index=False)
     conn.close()
 
 @app.route('/')
