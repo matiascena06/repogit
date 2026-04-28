@@ -51,10 +51,11 @@ def datos():
     conn = sqlite3.connect(db_path)
     df = pd.read_sql_query("SELECT * FROM registros", conn)
     conn.close()
-    return df.to_json(orient='records')
+    return df.to_json(orient='records') 
 
 
 if __name__ == '__main__':
     init_db()
     insertar_datos()
     app.run(debug=True)
+    
