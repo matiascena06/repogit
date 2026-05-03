@@ -6,9 +6,14 @@ import os
 
 app = Flask(__name__)
 
-DB = 'database.db'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB = os.path.join(BASE_DIR, 'instance', 'database.db')
+
+INDUSTRIAS = ['Government', 'Healthcare', 'Finance', 'MLOps', 'Education', 'Legal']
 
 def init_db():
+    os.makedirs(os.path.join(BASE_DIR, 'instance'), exist_ok=True)
+    conn = sqlite3.connect(DB)
     conn = sqlite3.connect(DB)
     cursor = conn.cursor()
 
@@ -29,6 +34,7 @@ def cargar_datos():
 
     df = pd.read_csv('data/labor_substitution.csv')
     df = df[['Role_ID', 'Industry', 'Human_Labor_Cost_hr', 'Tokens_per_Human_Hour', 'Inference_Cost_2026' , 'Agent_Labor_Equivalent_Cost', 'Substitution_Elasticity', 'AI_Augmentation_Factor', 'Automation_Risk_Index', 'Hardware_CapEx_Sensitivity', 'Regulatory_Moat', 'Substitution_Year_Est']]
+    df = df[df['Industry'].isin(INDUSTRIAS)]
 
     df.to_sql('registros', conn, if_exists='replace', index=False)
     conn.close()
@@ -37,7 +43,7 @@ def generar_grafico1():
     conn = sqlite3.connect(DB)
     df = pd.read_sql_query("SELECT * FROM registros", conn)
     conn.close()
-
+    
     df_top = df.sort_values(by='Human_Labor_Cost_hr', ascending=False).head(10)
 
     plt.figure(figsize=(10,5))
@@ -54,7 +60,7 @@ def generar_grafico2():
     df = pd.read_sql_query("SELECT * FROM registros", conn)
     conn.close()
 
-    df_group = df.groupby('Industry')['Human_Labor_Cost_hr'].mean().sort_values(ascending=False).head(10)
+    df_group = df.groupby('Industry')['Human_Labor_Cost_hr'].mean().sort_values(ascending=False)
 
     plt.figure(figsize=(10,5))
     df_group.plot(kind='bar')
@@ -74,6 +80,7 @@ def generar_grafico_reemplazo_tiempo():
     plt.title("Estimación de reemplazo de trabajos en el tiempo")
     plt.xlabel("Año")
     plt.ylabel("Nivel de reemplazo (estimado)")
+    df.groupby('Substitution_Year_Est')['Automation_Risk_Index'].mean().plot()
 
     plt.savefig('static/grafico3.png', bbox_inches='tight')
     plt.close()
@@ -115,25 +122,44 @@ def generar_grafico_costo_comparacion():
     plt.savefig('static/grafico5.png', bbox_inches='tight')
     plt.close()
 
-@app.route('/')
-def index():
+def obtener_datos_index():
     conn = sqlite3.connect(DB)
-    df = pd.read_sql_query("SELECT * FROM registros LIMIT 10", conn)
-
-    promedio = df['Human_Labor_Cost_hr'].mean()
-    maximo = df['Human_Labor_Cost_hr'].max()
-    minimo = df['Human_Labor_Cost_hr'].min()
-
+    df = pd.read_sql_query("SELECT * FROM registros", conn)
     conn.close()
 
+    columnas_numericas = [
+        'Human_Labor_Cost_hr', 'Tokens_per_Human_Hour', 'Inference_Cost_2026',
+        'Agent_Labor_Equivalent_Cost', 'Substitution_Elasticity', 'AI_Augmentation_Factor',
+        'Automation_Risk_Index', 'Hardware_CapEx_Sensitivity', 'Substitution_Year_Est'
+    ]
+
+    for col in columnas_numericas:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+    
+    df_promedios = df.groupby('Industry')[columnas_numericas].mean().round(2)
+    
+    
+
+    tabla = df_promedios.to_html(classes='tabla')
+    promedio = round(df['Human_Labor_Cost_hr'].mean(), 2)
+    maximo = round(df['Human_Labor_Cost_hr'].max(), 2)
+    minimo = round(df['Human_Labor_Cost_hr'].min(), 2)
+
+    return tabla, promedio, maximo, minimo
+
+
+@app.route('/')
+def index():
+    tabla, promedio, maximo, minimo = obtener_datos_index()
     return render_template(
         'index.html',
-        tabla=df.to_html(classes='tabla'),
-        promedio=round(promedio, 2),
-        maximo=round(maximo, 2),
-        minimo=round(minimo, 2)
+        tabla=tabla,
+        promedio=promedio,
+        maximo=maximo,
+        minimo=minimo
     )
-
+    
+    
 if __name__ == '__main__':
     init_db()
     cargar_datos()
@@ -143,3 +169,4 @@ if __name__ == '__main__':
     generar_grafico_area_tiempo()
     generar_grafico_costo_comparacion()
     app.run(debug=True)
+    
