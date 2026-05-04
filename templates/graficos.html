@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Gráficos - IA vs Humano</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">IA vs Humano</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('graficos') }}">Gráficos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section id="header">
+        <div class="container-header">
+            <h1>Análisis de <span class="result">datos</span></h1>
+            <p>Visualización del impacto de la IA en el mercado laboral</p>
+        </div>
+    </section>
+<section id="stats">
+    <div class="container">
+        <h2>Estadísticas generales</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p class="stat-label">Costo humano promedio/hr</p>
+                <p class="stat-valor">${{ stats.promedio_costo_humano }}</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Riesgo máximo</p>
+                <p class="stat-valor">{{ stats.maximo_riesgo }}</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Riesgo mínimo</p>
+                <p class="stat-valor">{{ stats.minimo_riesgo }}</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Riesgo promedio</p>
+                <p class="stat-valor">{{ stats.promedio_riesgo }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+    <section id="graficos">
+        <div class="container">
+            <h2>Gráficos</h2>
+            <div class="graficos-grid">
+                <div class="grafico-card">
+                    <h3>Costo humano vs IA</h3>
+                    <img src="{{ url_for('static', filename='g1.png') }}">
+                </div>
+                <div class="grafico-card">
+                    <h3>Riesgo por industria</h3>
+                    <img src="{{ url_for('static', filename='g2.png') }}">
+                </div>
+                <div class="grafico-card">
+                    <h3>Reemplazo en el tiempo</h3>
+                    <img src="{{ url_for('static', filename='g3.png') }}">
+                </div>
+                <div class="grafico-card">
+                    <h3>Distribución por industria</h3>
+                    <img src="{{ url_for('static', filename='g4.png') }}">
+                </div>
+                <div class="grafico-card">
+                    <h3>Top trabajos con mayor riesgo</h3>
+                    <img src="{{ url_for('static', filename='g5.png') }}">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container-footer">
+            <p>Copyright © 2026 - Taller de internet</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
