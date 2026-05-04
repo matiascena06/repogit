@@ -13,6 +13,21 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 db_path = os.path.join(BASE_DIR, 'instance', 'database.db')
 
+columnas_numericas = [
+        'Human_Labor_Cost_hr', 'Tokens_per_Human_Hour', 'Inference_Cost_2026',
+        'Agent_Labor_Equivalent_Cost', 'Substitution_Elasticity', 'AI_Augmentation_Factor',
+        'Automation_Risk_Index', 'Hardware_CapEx_Sensitivity', 'Substitution_Year_Est'
+    ]
+
+def promedios_numericos():
+    conn = sqlite3.connect(db_path)
+    df = pd.read_sql_query("SELECT * FROM registros", conn)
+    conn.close()
+    for col in columnas_numericas:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+    df_promedios = df.groupby('Industry')[columnas_numericas].mean().round(2)
+    return df_promedios
+
 def init_db():
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -43,7 +58,7 @@ def obtener_df():
     df = pd.read_sql_query("SELECT * FROM registros", conn)
     conn.close()
     df['Industry'] = df['Industry'].astype(str).str.strip().str.lower()
-    industrias = ['government', 'healthcare', 'mlops', 'education', 'legal', 'finance']
+    industrias = ['Government', 'Healthcare', 'MLOps', 'Education', 'Legal', 'Finance']
     return df[df['Industry'].isin(industrias)]
 
 def generar_graficos():
@@ -76,7 +91,7 @@ def generar_graficos():
     plt.gca().set_axisbelow(True)
 
     df_violin = df.dropna(subset=['Substitution_Year_Est', 'Industry'])
-
+    
     sns.violinplot(
         data=df_violin,
         x='Industry',
