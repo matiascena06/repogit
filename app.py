@@ -60,16 +60,28 @@ def generar_graficos():
     plt.close()
 
     plt.figure()
-    df.groupby('Industry')['Automation_Risk_Index'].mean().plot(kind='bar')
-    plt.title("Riesgo por industria")
-    plt.savefig(os.path.join(STATIC_DIR, 'g2.png'))
-    plt.close()
-
-    plt.figure()
     df.groupby('Substitution_Year_Est')['Automation_Risk_Index'].mean().plot()
     plt.title("Reemplazo en el tiempo")
     plt.savefig(os.path.join(STATIC_DIR, 'g3.png'))
     plt.close()
+
+    low  = df[df["Regulatory_Moat"] == "Low"]["AI_Augmentation_Factor"].values
+    med  = df[df["Regulatory_Moat"] == "Med"]["AI_Augmentation_Factor"].values
+    high = df[df["Regulatory_Moat"] == "High"]["AI_Augmentation_Factor"].values
+ 
+    plt.figure()
+    plt.hist([low, med, high], bins=15, stacked=True,
+             color=["#22d3ee", "#7c6af7", "#f97316"],
+             label=["Barrera Baja", "Barrera Media", "Barrera Alta"],
+             edgecolor="white", linewidth=0.3)
+ 
+    plt.xlabel("AI Augmentation Factor")
+    plt.ylabel("N° de roles")
+    plt.title("AI Augmentation Factor por Barrera Regulatoria")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(STATIC_DIR, 'g2.png'))
+ 
 
     
     plt.figure(figsize=(10,6))
