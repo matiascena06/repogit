@@ -51,18 +51,20 @@ def generar_graficos():
     if df.empty:
         return
 
-    plt.figure()
-    plt.scatter(df['Human_Labor_Cost_hr'], df['Agent_Labor_Equivalent_Cost'])
-    plt.title("Costo humano vs IA")
+    scatter = plt.scatter(
+        df['Human_Labor_Cost_hr'],
+        df['Agent_Labor_Equivalent_Cost'],
+        s=df['Automation_Risk_Index'] * 1,
+        c=df['Automation_Risk_Index'], 
+        cmap='coolwarm',
+        alpha=0.7
+    )
+    plt.colorbar(scatter, label='Riesgo de automatización')
+    plt.title("Costo humano vs IA (tamaño y color = riesgo)")
     plt.xlabel("Costo humano/hr")
     plt.ylabel("Costo IA")
-    plt.savefig(os.path.join(STATIC_DIR, 'g1.png'))
-    plt.close()
 
-    plt.figure()
-    df.groupby('Substitution_Year_Est')['Automation_Risk_Index'].mean().plot()
-    plt.title("Reemplazo en el tiempo")
-    plt.savefig(os.path.join(STATIC_DIR, 'g3.png'))
+    plt.savefig(os.path.join(STATIC_DIR, 'g1.png'))
     plt.close()
 
     low  = df[df["Regulatory_Moat"] == "Low"]["AI_Augmentation_Factor"].values
@@ -81,9 +83,26 @@ def generar_graficos():
     plt.legend()
     plt.tight_layout()
     plt.savefig(os.path.join(STATIC_DIR, 'g2.png'))
- 
+    plt.close()
 
-    
+    plt.figure(figsize=(10,6))
+    sns.scatterplot(
+        data=df,
+        x='Substitution_Elasticity',
+        y='Automation_Risk_Index',
+        hue='Industry',
+        palette="Set2",
+        s=100,
+        alpha=0.7
+    )
+    plt.title("Elasticidad de sustitución vs Riesgo de automatización")
+    plt.xlabel("Elasticidad de sustitución")
+    plt.ylabel("Riesgo de automatización")
+    plt.legend(title='Industria', bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.grid(True, linestyle='--', alpha=0.5)
+    plt.savefig(os.path.join(STATIC_DIR, 'g3.png'), bbox_inches='tight')
+    plt.close()
+
     plt.figure(figsize=(10,6))
     plt.gca().set_axisbelow(True)
 
