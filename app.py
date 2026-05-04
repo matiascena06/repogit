@@ -2,6 +2,7 @@ from flask import Flask, render_template
 import pandas as pd
 import sqlite3
 import matplotlib.pyplot as plt
+import seaborn as sns
 import os
 
 app = Flask(__name__)
@@ -10,6 +11,13 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB = os.path.join(BASE_DIR, 'instance', 'database.db')
 
 INDUSTRIAS = ['Government', 'Healthcare', 'Finance', 'MLOps', 'Education', 'Legal']
+
+columnas_numericas = [
+        'Human_Labor_Cost_hr', 'Tokens_per_Human_Hour', 'Inference_Cost_2026',
+        'Agent_Labor_Equivalent_Cost', 'Substitution_Elasticity', 'AI_Augmentation_Factor',
+        'Automation_Risk_Index', 'Hardware_CapEx_Sensitivity', 'Substitution_Year_Est'
+    ]
+
 
 def init_db():
     os.makedirs(os.path.join(BASE_DIR, 'instance'), exist_ok=True)
@@ -29,6 +37,18 @@ def init_db():
     conn.commit()
     conn.close()
 
+def promedios_numericos():
+    conn = sqlite3.connect(DB)
+    df = pd.read_sql_query("SELECT * FROM registros", conn)
+    conn.close()
+
+    for col in columnas_numericas:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    df_promedios = df.groupby('Industry')[columnas_numericas].mean().round(2)
+
+    return df_promedios
+
 def cargar_datos():
     conn = sqlite3.connect(DB)
 
@@ -39,7 +59,7 @@ def cargar_datos():
     df.to_sql('registros', conn, if_exists='replace', index=False)
     conn.close()
 
-def generar_grafico1():
+def grafico_mayor_costo_horario():
     conn = sqlite3.connect(DB)
     df = pd.read_sql_query("SELECT * FROM registros", conn)
     conn.close()
@@ -55,7 +75,7 @@ def generar_grafico1():
     plt.savefig('static/grafico1.png', bbox_inches='tight')
     plt.close()
 
-def generar_grafico2():
+def costo_promedio_horario_por_industria():
     conn = sqlite3.connect(DB)
     df = pd.read_sql_query("SELECT * FROM registros", conn)
     conn.close()
@@ -69,37 +89,23 @@ def generar_grafico2():
     plt.savefig('static/grafico2.png', bbox_inches='tight')
     plt.close()
 
-def generar_grafico_reemplazo_tiempo():
+def grafico_reemplazo_tiempo():
     conn = sqlite3.connect(DB)
     df = pd.read_sql_query("SELECT * FROM registros", conn)
     conn.close()
 
-    df = df.dropna(subset=['Substitution_Year_Est', 'Automation_Risk_Index'])
+    df = df.dropna(subset=['Substitution_Year_Est', 'Industry'])
 
-    plt.figure(figsize=(10,5))
-    plt.title("Estimación de reemplazo de trabajos en el tiempo")
-    plt.xlabel("Año")
-    plt.ylabel("Nivel de reemplazo (estimado)")
-    df.groupby('Substitution_Year_Est')['Automation_Risk_Index'].mean().plot()
+    plt.figure(figsize=(10,6))
+    plt.gca().set_axisbelow(True)
+    sns.violinplot(data=df, x='Industry', y='Substitution_Year_Est', palette = "coolwarm", inner = "quartile")
+    plt.title("Distribución de años de sustitución por industria")
+    plt.xlabel("Industria")
+    plt.ylabel("Año estimado de sustitución")
+    plt.xticks(rotation=45, ha='right')
+    plt.grid(axis='y', linestyle='-', alpha=0.5)
 
     plt.savefig('static/grafico3.png', bbox_inches='tight')
-    plt.close()
-
-def generar_grafico_area_tiempo():
-    conn = sqlite3.connect(DB)
-    df = pd.read_sql_query("SELECT * FROM registros", conn)
-    conn.close()
-
-    df = df.dropna(subset=['Substitution_Year_Est', 'Automation_Risk_Index'])
-
-    df_group = df.groupby(['Substitution_Year_Est', 'Industry'])['Automation_Risk_Index'].sum().unstack().fillna(0)
-
-    df_group.plot(figsize=(10,6))
-    plt.title("Reemplazo por industria en el tiempo")
-    plt.xlabel("Año")
-    plt.ylabel("Nivel de reemplazo")
-
-    plt.savefig('static/grafico4.png', bbox_inches='tight')
     plt.close()
 
 def generar_grafico_costo_comparacion():
@@ -119,7 +125,7 @@ def generar_grafico_costo_comparacion():
     plt.legend()
     plt.title("Costo humano vs IA")
 
-    plt.savefig('static/grafico5.png', bbox_inches='tight')
+    plt.savefig('static/grafico4.png', bbox_inches='tight')
     plt.close()
 
 def obtener_datos_index():
@@ -127,25 +133,17 @@ def obtener_datos_index():
     df = pd.read_sql_query("SELECT * FROM registros", conn)
     conn.close()
 
-    columnas_numericas = [
-        'Human_Labor_Cost_hr', 'Tokens_per_Human_Hour', 'Inference_Cost_2026',
-        'Agent_Labor_Equivalent_Cost', 'Substitution_Elasticity', 'AI_Augmentation_Factor',
-        'Automation_Risk_Index', 'Hardware_CapEx_Sensitivity', 'Substitution_Year_Est'
-    ]
-
     for col in columnas_numericas:
         df[col] = pd.to_numeric(df[col], errors='coerce')
     
-    df_promedios = df.groupby('Industry')[columnas_numericas].mean().round(2)
-    
-    
+    promedios = promedios_numericos()
 
-    tabla = df_promedios.to_html(classes='tabla')
-    promedio = round(df['Human_Labor_Cost_hr'].mean(), 2)
-    maximo = round(df['Human_Labor_Cost_hr'].max(), 2)
-    minimo = round(df['Human_Labor_Cost_hr'].min(), 2)
+    tabla = promedios.to_html(classes='tabla')
+    promedio_general = round(promedios['Human_Labor_Cost_hr'].mean(), 2)
+    maximo = round(promedios['Human_Labor_Cost_hr'].max(), 2)
+    minimo = round(promedios['Human_Labor_Cost_hr'].min(), 2)
 
-    return tabla, promedio, maximo, minimo
+    return tabla, promedio_general, maximo, minimo
 
 
 @app.route('/')
@@ -163,10 +161,9 @@ def index():
 if __name__ == '__main__':
     init_db()
     cargar_datos()
-    generar_grafico1()
-    generar_grafico2()
-    generar_grafico_reemplazo_tiempo()
-    generar_grafico_area_tiempo()
+    grafico_mayor_costo_horario()
+    costo_promedio_horario_por_industria()
+    grafico_reemplazo_tiempo()
     generar_grafico_costo_comparacion()
     app.run(debug=True)
     
