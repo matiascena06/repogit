@@ -5,6 +5,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import os
+import seaborn as sns
 
 app = Flask(__name__)
 
@@ -70,16 +71,30 @@ def generar_graficos():
     plt.savefig(os.path.join(STATIC_DIR, 'g3.png'))
     plt.close()
 
-    plt.figure()
-    df['Industry'].value_counts().plot(kind='pie')
-    plt.title("Distribución por industria")
-    plt.ylabel("")
-    plt.savefig(os.path.join(STATIC_DIR, 'g4.png'))
+    
+    plt.figure(figsize=(10,6))
+    plt.gca().set_axisbelow(True)
+
+    df_violin = df.dropna(subset=['Substitution_Year_Est', 'Industry'])
+
+    sns.violinplot(
+        data=df_violin,
+        x='Industry',
+        y='Substitution_Year_Est',
+        palette="coolwarm",
+        inner="quartile"
+    )
+
+    plt.title("Distribución de años de sustitución por industria")
+    plt.xlabel("Industria")
+    plt.ylabel("Año estimado de sustitución")
+    plt.xticks(rotation=45, ha='right')
+    plt.grid(axis='y', linestyle='-', alpha=0.5)
+
+    plt.savefig(os.path.join(STATIC_DIR, 'g4.png'), bbox_inches='tight')
     plt.close()
 
-    plt.figure()
-
-
+    
 
 @app.route('/')
 def index():
