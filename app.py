@@ -56,7 +56,7 @@ def generar_graficos():
         df['Agent_Labor_Equivalent_Cost'],
         s=df['Automation_Risk_Index'] * 1,
         c=df['Automation_Risk_Index'], 
-        cmap='coolwarm',
+        cmap='RdYlGn_r',
         alpha=0.7
     )
     plt.colorbar(scatter, label='Riesgo de automatización')
@@ -76,7 +76,7 @@ def generar_graficos():
     pivot_df = pivot_df.sort_values(by='Total', ascending=False).drop(columns='Total')
     pivot_df = pivot_df[['Low', 'Med', 'High']]
     plt.figure(figsize=(14, 8))
-    pivot_df.plot(kind='bar', stacked=True, color=['#7dd3e7', '#7b68ee', '#e67e35'], ax=plt.gca(), edgecolor='white', linewidth=0.5)
+    pivot_df.plot(kind='bar', stacked=True, color= sns.color_palette("magma"), ax=plt.gca(), edgecolor='white', linewidth=0.5)
     plt.xticks(rotation=45, ha='right')
     plt.show()
     plt.savefig(os.path.join(STATIC_DIR, 'g2.png'))
@@ -109,7 +109,7 @@ def generar_graficos():
         data=df_violin,
         x='Industry',
         y='Substitution_Year_Est',
-        palette="coolwarm",
+        palette="magma",
         inner="quartile"
     )
 
@@ -130,7 +130,7 @@ def generar_graficos():
         data=industry_impact, 
         x='AI_Augmentation_Factor', 
         y='Industry', 
-        palette='magma'
+        palette='magma'     
     )
 
     for index, value in enumerate(industry_impact['AI_Augmentation_Factor']):
@@ -143,6 +143,20 @@ def generar_graficos():
 
     plt.tight_layout()
     plt.savefig(os.path.join(STATIC_DIR, 'g5.png'), bbox_inches='tight')
+    plt.close()
+    
+    ind_summary = (df.groupby('Industry')['Hardware_CapEx_Sensitivity'].mean().sort_values(ascending=True))
+    
+    plt.figure(figsize=(9, 6))
+    bars = plt.barh(ind_summary.index, ind_summary.values, color= sns.color_palette("magma"),
+                    edgecolor='white', linewidth=0.5)
+    plt.xlabel('CapEx Sensitivity promedio')
+    plt.title('Sensibilidad al CapEx de hardware por industria')
+    for bar, val in zip(bars, ind_summary.values):
+        plt.text(val + 0.003, bar.get_y() + bar.get_height() / 2,
+                 f'{val:.3f}', va='center', fontsize=9)
+    plt.tight_layout()
+    plt.savefig(os.path.join(STATIC_DIR, 'g7.png'),bbox_inches= 'tight')
     plt.close()
 
     
