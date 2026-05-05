@@ -6,10 +6,8 @@
     <title> No hace falta que lo sepan </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
 <body>
-  
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('index') }}">IA vs Humano</a>
@@ -19,23 +17,17 @@
                         <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ url_for('graficos') }}">Gráficos</a>
+                        <a class="nav-link active" href="{{ url_for('analisis') }}">Análisis</a>
                     </li>
                 </ul>
             </div>
         </div>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
     </nav>
-     <section id="header">
+    <section id="header">
         <div class="container-header">
             <h1><span class="result">Análisis de datos</span></h1>
             <p>Todavia no tenemos tema, ayuda</p>
-            <a href="/graficos" class="btn-principal">Ver análisis (decime un temita)</a>
+            <a href="/analisis" class="btn-principal">Ver análisis (decime un temita)</a>
         </div>
     </section>
     <section id="team">

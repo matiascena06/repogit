@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Análisis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('index') }}">IA vs Humano</a>
+        <div class="navbar-nav">
+            <a class="nav-link active">Análisis</a>
+        </div>
+    </div>
+</nav>
+
+<section id="header">
+    <div class="container-header">
+        <h1>Análisis <span class="result">general</span></h1>
+        <p>Exploración del impacto de la IA en el trabajo</p>
+    </div>
+</section>
+
+<section id="stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p class="stat-label">Costo humano promedio</p>
+                <p class="stat-valor">${{ stats.promedio_costo_humano }}</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Riesgo máximo</p>
+                <p class="stat-valor">{{ stats.maximo_riesgo }}</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Riesgo mínimo</p>
+                <p class="stat-valor">{{ stats.minimo_riesgo }}</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Riesgo promedio</p>
+                <p class="stat-valor">{{ stats.promedio_riesgo }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="analisis-links">
+        <a href="{{ url_for('costos') }}" class="card-link">💰 Costos</a>
+        <a href="{{ url_for('riesgo') }}" class="card-link">⚠️ Riesgo</a>
+    </div>
+</section>
+<footer>
+    <div class="container-footer">
+        <p>Copyright © 2026 No hace falta que lo sepan - Taller de internet</p>
+    </div>
+</footer>
+</body>
+</html>
