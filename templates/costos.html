@@ -26,17 +26,33 @@
 
 <section id="graficos">
     <div class="container">
+
+        <div class="info-box">
+            <h2>Análisis de costos</h2>
+            <p>
+                En esta sección se compara el costo del trabajo humano frente al costo equivalente de la IA.
+                Esto permite entender en qué casos la automatización resulta económicamente viable.
+            </p>
+        </div>
+
         <div class="graficos-grid">
 
-            <div class="grafico-card loaded">
+            <div class="grafico-card">
                 <h3>Costo humano vs IA</h3>
                 <img src="{{ url_for('static', filename='plots/g1.png') }}">
+                <p class="grafico-desc">
+                    Relación entre el costo por hora humano y el costo equivalente de agentes de IA.
+                    Los puntos más bajos indican mayor eficiencia económica de la automatización.
+                </p>
             </div>
 
-
-            <div class="grafico-card loaded">
-                <h3>Costo IA por industria</h3>
+            <div class="grafico-card">
+                <h3>Sensibilidad al CapEx</h3>
                 <img src="{{ url_for('static', filename='plots/g3.png') }}">
+                <p class="grafico-desc">
+                    Mide cuánto influye la inversión en hardware en cada industria.
+                    Valores altos indican mayor dependencia de infraestructura tecnológica.
+                </p>
             </div>
 
         </div>

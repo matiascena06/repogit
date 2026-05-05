@@ -26,21 +26,39 @@
 
 <section id="graficos">
     <div class="container">
+
+        <div class="info-box">
+            <h2>Análisis de riesgo</h2>
+            <p>
+                Estos gráficos muestran qué tan expuestas están las industrias a ser automatizadas.
+                Se consideran factores como el año estimado de reemplazo y el impacto potencial de la IA.
+            </p>
+        </div>
+
         <div class="graficos-grid">
 
-            <div class="grafico-card loaded">
-                <h3>Años de sustitución por industria</h3>
-                <img src="{{ url_for('static', filename='/plots/g4.png') }}">
+            <div class="grafico-card">
+                <h3>Años de sustitución</h3>
+                <img src="{{ url_for('static', filename='plots/g4.png') }}">
+                <p class="grafico-desc">
+                    Distribución de los años estimados en los que distintos roles podrían ser reemplazados por IA.
+                </p>
             </div>
 
-            <div class="grafico-card loaded">
-                <h3>AI Augmentation por barrera</h3>
+            <div class="grafico-card">
+                <h3>AI Augmentation</h3>
                 <img src="{{ url_for('static', filename='plots/g2.png') }}">
+                <p class="grafico-desc">
+                    Muestra cómo la IA puede aumentar la productividad según la barrera regulatoria de cada industria.
+                </p>
             </div>
 
-            <div class="grafico-card loaded">
-                <h3>Riesgo promedio por industria</h3>
-                <img src="{{ url_for('static', filename='/plots/g5.png') }}">
+            <div class="grafico-card">
+                <h3>Impacto por industria</h3>
+                <img src="{{ url_for('static', filename='plots/g5.png') }}">
+                <p class="grafico-desc">
+                    Ranking de industrias según el potencial de impacto de la IA en sus procesos.
+                </p>
             </div>
 
         </div>
