@@ -82,12 +82,21 @@ def generar_graficos():
     plt.savefig(os.path.join(STATIC_DIR, 'plots', 'g2.png'))
     plt.close()
 
-    plt.figure()
-    sns.violinplot(data=df, x='Industry', y='Substitution_Year_Est')
-    plt.xticks(rotation=45)
-    plt.savefig(os.path.join(STATIC_DIR, 'plots', 'g3.png'))
+    
+    ind_summary = (df.groupby('Industry')['Hardware_CapEx_Sensitivity'].mean().sort_values(ascending=True))
+    
+    plt.figure(figsize=(9, 6))
+    bars = plt.barh(ind_summary.index, ind_summary.values, color= sns.color_palette("magma"),
+                    edgecolor='white', linewidth=0.5)
+    plt.xlabel('CapEx Sensitivity promedio')
+    plt.title('Sensibilidad al CapEx de hardware por industria')
+    for bar, val in zip(bars, ind_summary.values):
+        plt.text(val + 0.003, bar.get_y() + bar.get_height() / 2,
+                 f'{val:.3f}', va='center', fontsize=9)
+    plt.tight_layout()
+    plt.savefig(os.path.join(STATIC_DIR, 'plots', 'g3.png'),bbox_inches= 'tight')
     plt.close()
-
+    
     plt.figure(figsize=(10,6))
     plt.gca().set_axisbelow(True)
 
@@ -133,19 +142,7 @@ def generar_graficos():
     plt.savefig(os.path.join(STATIC_DIR, 'plots', 'g5.png'), bbox_inches='tight')
     plt.close()
     
-    ind_summary = (df.groupby('Industry')['Hardware_CapEx_Sensitivity'].mean().sort_values(ascending=True))
     
-    plt.figure(figsize=(9, 6))
-    bars = plt.barh(ind_summary.index, ind_summary.values, color= sns.color_palette("magma"),
-                    edgecolor='white', linewidth=0.5)
-    plt.xlabel('CapEx Sensitivity promedio')
-    plt.title('Sensibilidad al CapEx de hardware por industria')
-    for bar, val in zip(bars, ind_summary.values):
-        plt.text(val + 0.003, bar.get_y() + bar.get_height() / 2,
-                 f'{val:.3f}', va='center', fontsize=9)
-    plt.tight_layout()
-    plt.savefig(os.path.join(STATIC_DIR, 'plots', 'g7.png'),bbox_inches= 'tight')
-    plt.close()
 
     
 
