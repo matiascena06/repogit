@@ -71,17 +71,14 @@ def generar_graficos():
     med  = df[df["Regulatory_Moat"] == "Med"]["AI_Augmentation_Factor"].values
     high = df[df["Regulatory_Moat"] == "High"]["AI_Augmentation_Factor"].values
  
-    plt.figure()
-    plt.hist([low, med, high], bins=15, stacked=True,
-             color=["#22d3ee", "#7c6af7", "#f97316"],
-             label=["Barrera Baja", "Barrera Media", "Barrera Alta"],
-             edgecolor="white", linewidth=0.3)
- 
-    plt.xlabel("AI Augmentation Factor")
-    plt.ylabel("N° de roles")
-    plt.title("AI Augmentation Factor por Barrera Regulatoria")
-    plt.legend()
-    plt.tight_layout()
+    pivot_df = df.groupby(['Industry', 'Regulatory_Moat']).size().unstack(fill_value=0)
+    pivot_df['Total'] = pivot_df.sum(axis=1)
+    pivot_df = pivot_df.sort_values(by='Total', ascending=False).drop(columns='Total')
+    pivot_df = pivot_df[['Low', 'Med', 'High']]
+    plt.figure(figsize=(14, 8))
+    pivot_df.plot(kind='bar', stacked=True, color=['#7dd3e7', '#7b68ee', '#e67e35'], ax=plt.gca(), edgecolor='white', linewidth=0.5)
+    plt.xticks(rotation=45, ha='right')
+    plt.show()
     plt.savefig(os.path.join(STATIC_DIR, 'g2.png'))
     plt.close()
 
@@ -121,8 +118,31 @@ def generar_graficos():
     plt.ylabel("Año estimado de sustitución")
     plt.xticks(rotation=45, ha='right')
     plt.grid(axis='y', linestyle='-', alpha=0.5)
-
     plt.savefig(os.path.join(STATIC_DIR, 'g4.png'), bbox_inches='tight')
+    plt.close()
+
+    industry_impact = df.groupby('Industry')['AI_Augmentation_Factor'].mean().sort_values(ascending=False).reset_index()
+
+    plt.figure(figsize=(12, 7))
+    sns.set_theme(style="whitegrid")
+
+    barplot = sns.barplot(
+        data=industry_impact, 
+        x='AI_Augmentation_Factor', 
+        y='Industry', 
+        palette='magma'
+    )
+
+    for index, value in enumerate(industry_impact['AI_Augmentation_Factor']):
+        plt.text(value + 0.01, index, f'{value:.2f}', va='center', fontweight='bold')
+
+    plt.title('Ranking de Impacto: Potencial de IA promedio por Industria', fontsize=15, fontweight='bold')
+    plt.xlabel('Factor de Aumentación Promedio (0 a 1)', fontsize=12)
+    plt.ylabel('Industria', fontsize=12)
+    plt.xlim(0, 1.1)
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(STATIC_DIR, 'g5.png'), bbox_inches='tight')
     plt.close()
 
     
