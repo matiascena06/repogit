@@ -130,7 +130,7 @@ def generar_graficos():
     plt.xlim(0, 1.1)
 
     plt.tight_layout()
-    plt.savefig(os.path.join(STATIC_DIR, 'g5.png'), bbox_inches='tight')
+    plt.savefig(os.path.join(STATIC_DIR, 'plots', 'g5.png'), bbox_inches='tight')
     plt.close()
     
     ind_summary = (df.groupby('Industry')['Hardware_CapEx_Sensitivity'].mean().sort_values(ascending=True))
