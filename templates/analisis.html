@@ -61,6 +61,47 @@
 </section>
 
 <section class="container">
+    <form method="GET">
+        <div class="filter-row">
+            <input type="text" name="search" placeholder="Buscar..."
+                   value="{{ request.args.get('search','') }}">
+            <select name="industry">
+                <option value="">📊 Todas</option>
+                <option value="finance" {% if request.args.get('industry')=='finance' %}selected{% endif %}>💰 Finance</option>
+                <option value="healthcare" {% if request.args.get('industry')=='healthcare' %}selected{% endif %}>🏥 Healthcare</option>
+                <option value="education" {% if request.args.get('industry')=='education' %}selected{% endif %}>🎓 Education</option>
+                <option value="legal" {% if request.args.get('industry')=='legal' %}selected{% endif %}>⚖️ Legal</option>
+                <option value="government" {% if request.args.get('industry')=='government' %}selected{% endif %}>🏛️ Government</option>
+                <option value="mlops" {% if request.args.get('industry')=='mlops' %}selected{% endif %}>🤖 MLOps</option>
+            </select>
+            <button type="submit">🔍Filtrar</button>
+        </div>
+    </form>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Industria</th>
+                    <th>Costo Humano</th>
+                    <th>Costo IA</th>
+                    <th>Riesgo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td>{{ row.Industry }}</td>
+                    <td>${{ row.Human_Labor_Cost_hr }}</td>
+                    <td>${{ row.Agent_Labor_Equivalent_Cost }}</td>
+                    <td>{{ row.Automation_Risk_Index }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="container">
     <div class="analisis-links">
         <a href="{{ url_for('costos') }}" class="card-link">💰 Costos</a>
         <a href="{{ url_for('riesgo') }}" class="card-link">⚠️ Riesgo</a>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import pandas as pd
 import sqlite3
 import matplotlib
@@ -6,6 +6,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import os
 import seaborn as sns
+import random
 
 app = Flask(__name__)
 
@@ -142,13 +143,30 @@ def generar_graficos():
     plt.savefig(os.path.join(STATIC_DIR, 'plots', 'g5.png'), bbox_inches='tight')
     plt.close()
     
-    
-
-    
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    roles = [
+        {
+            "rol": "Backend Dev",
+            "icon": "code"
+        },
+        {
+            "rol": "Data Scientist",
+            "icon": "brain"
+        },
+        {
+            "rol": "Analytics",
+            "icon": "chart-line"
+        }
+    ]
+    random.shuffle(roles)
+    integrantes = [
+        {"nombre": "Polo", "data": roles[0]},
+        {"nombre": "Pedro", "data": roles[1]},
+        {"nombre": "Mati", "data": roles[2]},
+    ]
+    return render_template("index.html", integrantes=integrantes)
 
 
 @app.route('/analisis')
@@ -157,15 +175,32 @@ def analisis():
         conn = sqlite3.connect(db_path)
         df = pd.read_sql_query("SELECT * FROM registros", conn)
         conn.close()
+        search = request.args.get("search", "")
+        industry = request.args.get("industry", "")
 
+        if search:
+            try:
+                num = float(search)
+                df = df[
+                    (df["Automation_Risk_Index"] == num) |
+                    (df["Human_Labor_Cost_hr"] == num) |
+                    (df["Agent_Labor_Equivalent_Cost"] == num)
+                ]
+            except:
+                df = df[df.apply(lambda row: search.lower() in str(row).lower(), axis=1)]
+
+        if industry:
+            df["Industry"] = df["Industry"].str.lower()
+            df = df[df["Industry"] == industry.lower()]
+
+        data = df.head(50).to_dict(orient="records")
         stats = {
             'promedio_costo_humano': round(df['Human_Labor_Cost_hr'].mean(), 2),
             'maximo_riesgo': round(df['Automation_Risk_Index'].max(), 2),
             'minimo_riesgo': round(df['Automation_Risk_Index'].min(), 2),
             'promedio_riesgo': round(df['Automation_Risk_Index'].mean(), 2),
         }
-
-        return render_template('analisis.html', stats=stats)
+        return render_template('analisis.html', stats=stats, data=data)
 
     except Exception as e:
         return f"Error en analisis: {e}"

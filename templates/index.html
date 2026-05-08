@@ -2,56 +2,93 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=>, initial-scale=1.0">
-    <title> No hace falta que lo sepan </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA vs Humano</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('index') }}">IA vs Humano</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ url_for('analisis') }}">Análisis</a>
-                    </li>
-                </ul>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('index') }}">IA vs Humano</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('analisis') }}">Análisis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#team">Equipo</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section id="header">
+    <div class="container-header">
+        <h1><i class="fas fa-robot" style="margin-right: 15px;"></i><span class="result">IA vs Trabajo Humano</span></h1>
+        <p>
+            <i class="fas fa-sparkles" style="color: #7c6af7; margin-right: 8px;"></i>
+            Exploramos cómo la inteligencia artificial está transformando el mundo laboral:
+            costos, riesgos y oportunidades.
+        </p>
+        <a href="{{ url_for('analisis') }}" class="btn-principal">
+            <i class="fas fa-chart-bar" style="margin-right: 8px;"></i>Ver análisis
+        </a>
+    </div>
+</section>
+
+<section class="container">
+    <div class="info-box">
+        <h2><i class="fas fa-question-circle" style="margin-right: 10px;"></i>¿Por qué importa esto?</h2>
+        <p>
+            La automatización ya no es algo del futuro. Hoy, muchas tareas humanas pueden ser
+            reemplazadas o potenciadas por inteligencia artificial.
+        </p>
+        <p>
+            Este proyecto analiza datos reales para entender:
+        </p>
+        <ul style="color:#b0b0c0; text-align:left;">
+            <li><i class="fas fa-industry" style="color: #7c6af7; margin-right: 8px; width: 20px;"></i>Qué industrias tienen más riesgo</li>
+            <li><i class="fas fa-dollar-sign" style="color: #7c6af7; margin-right: 8px; width: 20px;"></i>Dónde la IA reduce costos significativamente</li>
+            <li><i class="fas fa-lightbulb" style="color: #7c6af7; margin-right: 8px; width: 20px;"></i>Cuándo conviene automatizar</li>
+        </ul>
+    </div>
+</section>
+
+<section class="container" style="text-align:center; padding:60px 20px;">
+    <h2 style="color:#7c6af7;">“La IA no reemplaza trabajos, reemplaza tareas.”</h2>
+    <p style="color:#9a9ab0;">— Interpretación del análisis de datos.</p>
+</section>
+
+<section id="team">
+    <div class="container-team">
+        <h2><i class="fas fa-users" style="margin-right: 12px;"></i>El dream team</h2>
+        <div class="container-members">
+            {% for integrante in integrantes %}
+            <div class="team-member">
+                <div class="avatar">
+                    <i class="fas fa-{{ integrante.data.icon }}"></i>
+                </div>
+                    <p>{{ integrante.nombre }}</p>
+                <small style="color: #7a7a90;">
+                    {{ integrante.data.rol }}
+                </small>
             </div>
+            {% endfor %}
         </div>
-    </nav>
-    <section id="header">
-        <div class="container-header">
-            <h1><span class="result">Análisis de datos</span></h1>
-            <p>Todavia no tenemos tema, ayuda</p>
-            <a href="/analisis" class="btn-principal">Ver análisis (decime un temita)</a>
-        </div>
-    </section>
-    <section id="team">
-        <div class="container-team">
-            <h2>El dream team</h2>
-            <div class="container-members">
-                <div class="team-member">
-                    <div class="avatar">Avatar</div>
-                    <p>Polo</p>
-                </div>
-                <div class="team-member">
-                    <div class="avatar">Avatar</div>
-                    <p>Pedro</p>
-                </div>
-                <div class="team-member">
-                    <div class="avatar">Avatar</div>
-                    <p>Mati</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    </div>
+</section>
+
 <footer>
     <div class="container-footer">
-        <p>Copyright © 2026 No hace falta que lo sepan - Taller de internet</p>
+        <p><i class="fas fa-copyright" style="margin-right: 8px;"></i>2026 No hace falta que lo sepan - Taller de internet</p>
     </div>
 </footer>
 </body>
