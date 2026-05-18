@@ -271,6 +271,10 @@ def costos():
 def riesgo():
     return render_template('riesgo.html')
 
+@app.route('/cargar_csv')
+def cargar_csv():
+    insertar_datos()
+    return
 
 if __name__ == '__main__':
     init_db()

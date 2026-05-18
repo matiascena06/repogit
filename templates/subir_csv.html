@@ -5,6 +5,7 @@
     <title>Subir CSV</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -12,6 +13,19 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url_for('index') }}">IA vs Humano</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-toggle="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('analisis') }}">
+                    <i class="fas fa-chart-line"></i> Análisis
+                </a>
+                <a class="nav-link active">
+                    <i class="fas fa-file-csv"></i> CSV
+                </a>
+            </div>
+        </div> 
     </div>
 </nav>
 
@@ -23,22 +37,19 @@
 </section>
 
 <section class="container">
-
     <div class="info-box">
-
         <form method="POST" enctype="multipart/form-data">
-
             <input type="file" name="archivo" accept=".csv" class="form-control mb-3">
-
             <button type="submit" class="btn-principal">
                 Subir CSV
             </button>
-
         </form>
-
     </div>
-
 </section>
-
+<footer>
+    <div class="container-footer">
+        <p><i class="fas fa-copyright" style="margin-right: 8px;"></i>2026 No hace falta que lo sepan - Taller de internet</p>
+    </div>
+</footer>
 </body>
 </html>
