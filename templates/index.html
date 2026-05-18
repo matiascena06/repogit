@@ -6,6 +6,7 @@
     <title>IA vs Humano</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -13,7 +14,9 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url_for('index') }}">
+            <i class="fa-brands fa-android"></i>
             IA vs Humano
+            <i class="fa-solid fa-person-digging"></i>
         </a>
         <button class="navbar-toggler"
                 type="button"
@@ -42,7 +45,11 @@
 
 <section id="header">
     <div class="container-header">
-        <h1><i class="fas fa-robot" style="margin-right: 15px;"></i><span class="result">IA vs Trabajo Humano</span></h1>
+        <h1>
+            <i class="fas fa-robot"></i>
+            <span class="result">IA vs Trabajo Humano</span>
+            <i class="fa-solid fa-person"></i>
+        </h1>
         <p>
             <i class="fas fa-sparkles" style="color: #7c6af7; margin-right: 8px;"></i>
             Exploramos cómo la inteligencia artificial está transformando el mundo laboral:
@@ -77,66 +84,49 @@
         </ul>
     </div>
 </section>
+
 <section class="container">
-
     <div class="info-box">
-
         <h2>
             <i class="fas fa-database" style="margin-right: 10px;"></i>
             Sobre el dataset
         </h2>
-
         <p>
             Los datos utilizados en este proyecto provienen de un dataset público
             enfocado en el impacto de la inteligencia artificial sobre distintas industrias y roles laborales.
         </p>
-
         <p>
             A través de este dataset se analizan variables como:
         </p>
-
         <ul style="color:#b0b0c0; text-align:left;">
-
             <li>
                 <i class="fas fa-dollar-sign" style="color: #7c6af7; margin-right: 8px; width: 20px;"></i>
                 Costo laboral humano por hora
             </li>
-
             <li>
                 <i class="fas fa-robot" style="color: #7c6af7; margin-right: 8px; width: 20px;"></i>
                 Costo equivalente de automatización con IA
             </li>
-
             <li>
                 <i class="fas fa-triangle-exclamation" style="color: #7c6af7; margin-right: 8px; width: 20px;"></i>
                 Riesgo de automatización
             </li>
-
             <li>
                 <i class="fas fa-calendar" style="color: #7c6af7; margin-right: 8px; width: 20px;"></i>
                 Año estimado de sustitución
             </li>
-
             <li>
                 <i class="fas fa-scale-balanced" style="color: #7c6af7; margin-right: 8px; width: 20px;"></i>
                 Factores regulatorios y sensibilidad tecnológica
             </li>
-
         </ul>
-
         <p>
             Dataset obtenido desde
-            <a 
-                href="https://www.kaggle.com/datasets"
-                target="_blank"
-                style="color:#9d8cff;"
-            >
+            <a  href="https://www.kaggle.com/datasets" target="_blank" style="color:#9d8cff;">
                 Kaggle
-            </a>.
+            </a>
         </p>
-
     </div>
-
 </section>
 
 <section class="container" style="text-align:center; padding:60px 20px;">

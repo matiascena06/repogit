@@ -4,16 +4,36 @@
     <title>Costos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('index') }}">IA vs Humano</a>
-        <div class="navbar-nav">
-            <a class="nav-link" href="{{ url_for('analisis') }}">Análisis</a>
-            <a class="nav-link active">Costos</a>
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+            <i class="fa-brands fa-android"></i>
+            IA vs Humano
+            <i class="fa-solid fa-person-digging"></i>
+        </a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link"
+                   href="{{ url_for('analisis') }}">
+                    <i class="fas fa-chart-line"></i>
+                    Análisis
+                </a>
+                <a class="nav-link active">
+                    <i class="fas fa-coins"></i>
+                    Costos
+                </a>
+            </div>
         </div>
     </div>
 </nav>
@@ -27,7 +47,6 @@
 
 <section id="graficos">
     <div class="container">
-
         <div class="info-box">
             <h2><i class="fas fa-chart-pie" style="margin-right: 10px;"></i>Análisis de costos</h2>
             <p>
@@ -35,9 +54,7 @@
                 Esto permite entender en qué casos la automatización resulta económicamente viable.
             </p>
         </div>
-
         <div class="graficos-grid">
-
             <div class="grafico-card">
                 <h3>Costo humano vs IA</h3>
                 <img src="{{ url_for('static', filename='plots/g1.png') }}">
@@ -46,7 +63,6 @@
                     Los puntos más bajos indican mayor eficiencia económica de la automatización.
                 </p>
             </div>
-
             <div class="grafico-card">
                 <h3>Sensibilidad al CapEx</h3>
                 <img src="{{ url_for('static', filename='plots/g3.png') }}">
@@ -55,10 +71,27 @@
                     Valores altos indican mayor dependencia de infraestructura tecnológica.
                 </p>
             </div>
-
         </div>
     </div>
 </section>
+
+<section class="container">
+    <div class="info-box">
+        <h2>
+            <i class="fas fa-lightbulb"></i>
+            Conclusión económica
+        </h2>
+        <p>
+            Los datos muestran que ciertas industrias presentan costos de automatización
+            significativamente menores al trabajo humano tradicional.
+        </p>
+        <p>
+            Esto explica por qué la inteligencia artificial se está adoptando rápidamente
+            en sectores donde las tareas son repetitivas y fácilmente escalables.
+        </p>
+    </div>
+</section>
+
 <footer>
     <div class="container-footer">
         <p><i class="fas fa-copyright" style="margin-right: 8px;"></i>2026 No hace falta que lo sepan - Taller de internet</p>
