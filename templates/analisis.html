@@ -10,8 +10,18 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url_for('index') }}">IA vs Humano</a>
-        <div class="navbar-nav">
-            <a class="nav-link active">Análisis</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('subir_csv') }}">Tu csv</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('costos') }}">Costos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('riesgo') }}">Riesgos</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -36,7 +46,12 @@
         </p>
     </div>
 </section>
-
+<section class="container">
+    <div class="analisis-links">
+        <a href="{{ url_for('costos') }}" class="card-link">💰 Costos</a>
+        <a href="{{ url_for('riesgo') }}" class="card-link">⚠️ Riesgo</a>
+    </div>
+</section>
 <section id="stats">
     <div class="container">
         <div class="stats-grid">
@@ -59,7 +74,6 @@
         </div>
     </div>
 </section>
-
 <section class="container">
     <form method="GET">
         <div class="filter-row">
@@ -100,11 +114,19 @@
         </table>
     </div>
 </section>
-
 <section class="container">
-    <div class="analisis-links">
-        <a href="{{ url_for('costos') }}" class="card-link">💰 Costos</a>
-        <a href="{{ url_for('riesgo') }}" class="card-link">⚠️ Riesgo</a>
+    <div class="info-box">
+        <h2>Conclusiones automáticas</h2>
+
+        <p>
+            La industria con mayor riesgo de automatización es:
+            <b>{{ industria_mas_riesgosa }}</b>
+        </p>
+
+        <p>
+            La industria con menor riesgo de automatización es:
+            <b>{{ industria_menos_riesgosa }}</b>
+        </p>
     </div>
 </section>
 <footer>

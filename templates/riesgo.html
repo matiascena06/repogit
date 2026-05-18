@@ -36,7 +36,6 @@
         </div>
 
         <div class="graficos-grid">
-
             <div class="grafico-card">
                 <h3>Años de sustitución</h3>
                 <img src="{{ url_for('static', filename='plots/g4.png') }}">
@@ -60,7 +59,15 @@
                     Ranking de industrias según el potencial de impacto de la IA en sus procesos.
                 </p>
             </div>
-
+            
+            <div class="grafico-card">
+                <h3>Tendencia temporal</h3>
+                <img src="{{ url_for('static', filename='plots/g6.png') }}">
+                <p class="grafico-desc">
+                    Evolución del riesgo promedio de automatización
+                    según el año estimado de sustitución.
+                </p>
+            </div>
         </div>
     </div>
 </section>

@@ -143,6 +143,28 @@ def generar_graficos():
     plt.savefig(os.path.join(STATIC_DIR, 'plots', 'g5.png'), bbox_inches='tight')
     plt.close()
     
+    plt.figure(figsize=(10,6))
+
+    tendencia = (
+        df.groupby('Substitution_Year_Est')['Automation_Risk_Index']
+        .mean()
+    )
+
+    plt.plot(
+        tendencia.index,
+        tendencia.values,
+        marker='o',
+        linewidth=3
+    )
+
+    plt.title("Evolución del riesgo de automatización")
+    plt.xlabel("Año estimado")
+    plt.ylabel("Riesgo promedio")
+
+    plt.grid(alpha=0.3)
+
+    plt.savefig(os.path.join(STATIC_DIR, 'plots', 'g6.png'))
+    plt.close()
 
 @app.route('/')
 def index():
@@ -217,7 +239,24 @@ def analisis():
             'minimo_riesgo': round(df['Automation_Risk_Index'].min(), 2),
             'promedio_riesgo': round(df['Automation_Risk_Index'].mean(), 2),
         }
-        return render_template('analisis.html', stats=stats, data=data)
+        industria_mas_riesgosa = (
+            df.groupby("Industry")["Automation_Risk_Index"]
+            .mean()
+            .idxmax()
+            )
+
+        industria_menos_riesgosa = (
+            df.groupby("Industry")["Automation_Risk_Index"]
+            .mean()
+            .idxmin()
+            )
+        return render_template(
+            'analisis.html', 
+            stats=stats, 
+            data=data,
+            industria_mas_riesgosa=industria_mas_riesgosa,
+            industria_menos_riesgosa=industria_menos_riesgosa
+            )
 
     except Exception as e:
         return f"Error en analisis: {e}"
