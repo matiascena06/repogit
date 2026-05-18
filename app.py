@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import pandas as pd
 import sqlite3
 import matplotlib
@@ -168,6 +168,23 @@ def index():
     ]
     return render_template("index.html", integrantes=integrantes)
 
+@app.route('/subir_csv', methods=['GET', 'POST'])
+def subir_csv():
+
+    if request.method == 'POST':
+        archivo = request.files['archivo']
+
+        if archivo and archivo.filename.endswith('.csv'):
+            ruta_csv = os.path.join(BASE_DIR, 'data', 'labor_substitution.csv')
+            archivo.save(ruta_csv)
+            conn = sqlite3.connect(db_path)
+            df = pd.read_csv(ruta_csv)
+            df.to_sql('registros', conn, if_exists='replace', index=False)
+            conn.close()
+            generar_graficos()
+            return redirect(url_for('analisis'))
+
+    return render_template('subir_csv.html')
 
 @app.route('/analisis')
 def analisis():
