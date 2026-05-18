@@ -58,7 +58,9 @@
 
         <div class="graficos-grid">
             <div class="grafico-card">
-                <h3>Años de sustitución</h3>
+                <h3>
+                <i class="fas fa-calendar-days"></i> Años de sustitución
+                </h3>
                 <img src="{{ url_for('static', filename='plots/g4.png') }}">
                 <p class="grafico-desc">
                     Distribución de los años estimados en los que distintos roles podrían ser reemplazados por IA.
@@ -66,7 +68,9 @@
             </div>
 
             <div class="grafico-card">
-                <h3>AI Augmentation</h3>
+                <h3>
+                    <i class="fas fa-brain"></i> AI Augmentation
+                </h3>
                 <img src="{{ url_for('static', filename='plots/g2.png') }}">
                 <p class="grafico-desc">
                     Muestra cómo la IA puede aumentar la productividad según la barrera regulatoria de cada industria.
@@ -74,7 +78,9 @@
             </div>
 
             <div class="grafico-card">
-                <h3>Impacto por industria</h3>
+                <h3>
+                    <i class="fas fa-industry"></i> Impacto por industria
+                </h3>
                 <img src="{{ url_for('static', filename='plots/g5.png') }}">
                 <p class="grafico-desc">
                     Ranking de industrias según el potencial de impacto de la IA en sus procesos.
@@ -82,7 +88,9 @@
             </div>
 
             <div class="grafico-card">
-                <h3>Tendencia temporal</h3>
+                <h3>
+                    <i class="fas fa-chart-line"></i> Tendencia temporal
+                    </h3>
                 <img src="{{ url_for('static', filename='plots/g6.png') }}">
                 <p class="grafico-desc">
                     Evolución del riesgo promedio de automatización
@@ -92,9 +100,29 @@
         </div>
     </div>
 </section>
+
+<section class="container">
+    <div class="info-box">
+        <h2>
+            <i class="fas fa-lightbulb"></i>
+            Interpretación del riesgo
+        </h2>
+        <p>
+            Los gráficos evidencian que algunas industrias poseen una mayor
+            exposición a la automatización debido a la naturaleza repetitiva
+            de sus tareas.
+        </p>
+        <p>
+            También puede observarse que el impacto de la IA no es uniforme,
+            ya que ciertos sectores presentan barreras regulatorias o técnicas
+            que reducen el reemplazo total del trabajo humano.
+        </p>
+    </div>
+</section>
+
 <footer>
     <div class="container-footer">
-        <p><i class="fas fa-copyright" style="margin-right: 8px;"></i>2026 No hace falta que lo sepan - Taller de internet</p>
+        <p><i class="fas fa-copyright"></i> 2026 No hace falta que lo sepan - Taller de internet</p>
     </div>
 </footer>
 </body>
