@@ -4,22 +4,44 @@
     <title>Análisis</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('index') }}">IA vs Humano</a>
-        <div class="collapse navbar-collapse">
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+            IA vs Humano
+        </a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('subir_csv') }}">CSV</a>
+                    <a class="nav-link"
+                       href="{{ url_for('subir_csv') }}">
+                        <i class="fas fa-file-csv"></i>
+                        CSV
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('costos') }}">Costos</a>
+                    <a class="nav-link"
+                       href="{{ url_for('costos') }}">
+                        <i class="fas fa-coins"></i>
+                        Costos
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('riesgo') }}">Riesgos</a>
+                    <a class="nav-link"
+                       href="{{ url_for('riesgo') }}">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        Riesgos
+                    </a>
                 </li>
             </ul>
         </div>
@@ -28,7 +50,8 @@
 
 <section id="header">
     <div class="container-header">
-        <h1>Análisis <span class="result">general</span></h1>
+        <h1><i class="fas fa-chart-line" style="margin-right: 10px;"></i>Análisis
+        <span class="result">general</span></h1>
         <p>Exploración del impacto de la IA en el trabajo</p>
     </div>
 </section>
@@ -56,18 +79,22 @@
     <div class="container">
         <div class="stats-grid">
             <div class="stat-card">
+                <i class="fas fa-dollar-sign"></i>
                 <p class="stat-label">Costo humano promedio</p>
                 <p class="stat-valor">${{ stats.promedio_costo_humano }}</p>
             </div>
             <div class="stat-card">
+                <i class="fas fa-arrow-trend-up"></i>
                 <p class="stat-label">Riesgo máximo</p>
                 <p class="stat-valor">{{ stats.maximo_riesgo }}</p>
             </div>
             <div class="stat-card">
+                <i class="fas fa-arrow-trend-down"></i>
                 <p class="stat-label">Riesgo mínimo</p>
                 <p class="stat-valor">{{ stats.minimo_riesgo }}</p>
             </div>
             <div class="stat-card">
+                <i class="fas fa-chart-simple"></i>
                 <p class="stat-label">Riesgo promedio</p>
                 <p class="stat-valor">{{ stats.promedio_riesgo }}</p>
             </div>
@@ -88,7 +115,10 @@
                 <option value="government" {% if request.args.get('industry')=='government' %}selected{% endif %}>🏛️ Government</option>
                 <option value="mlops" {% if request.args.get('industry')=='mlops' %}selected{% endif %}>🤖 MLOps</option>
             </select>
-            <button type="submit">🔍Filtrar</button>
+            <button type="submit">
+                <i class="fas fa-magnifying-glass"></i>
+                Filtrar
+            </button>
         </div>
     </form>
     <div class="table-wrapper">
@@ -116,16 +146,26 @@
 </section>
 <section class="container">
     <div class="info-box">
-        <h2>Conclusiones automáticas</h2>
-
+        <h2>
+            <i class="fas fa-lightbulb" style="margin-right: 10px;"></i>
+            Interpretación general
+        </h2>
         <p>
             La industria con mayor riesgo de automatización es:
             <b>{{ industria_mas_riesgosa }}</b>
         </p>
-
         <p>
             La industria con menor riesgo de automatización es:
             <b>{{ industria_menos_riesgosa }}</b>
+        </p>
+        <p>
+            Los resultados muestran que las industrias con tareas repetitivas
+            presentan un mayor riesgo de automatización mediante inteligencia artificial.
+        </p>
+        <p>
+        También se observa que ciertos sectores utilizan la IA principalmente
+        como herramienta de aumento productivo, más que como reemplazo total
+        del trabajo humano.
         </p>
     </div>
 </section>
