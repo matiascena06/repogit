@@ -239,28 +239,10 @@ def analisis():
             'minimo_riesgo': round(df['Automation_Risk_Index'].min(), 2),
             'promedio_riesgo': round(df['Automation_Risk_Index'].mean(), 2),
         }
-        industria_mas_riesgosa = (
-            df.groupby("Industry")["Automation_Risk_Index"]
-            .mean()
-            .idxmax()
-            )
-
-        industria_menos_riesgosa = (
-            df.groupby("Industry")["Automation_Risk_Index"]
-            .mean()
-            .idxmin()
-            )
-        return render_template(
-            'analisis.html', 
-            stats=stats, 
-            data=data,
-            industria_mas_riesgosa=industria_mas_riesgosa,
-            industria_menos_riesgosa=industria_menos_riesgosa
-            )
+        return render_template('analisis.html', stats=stats, data=data)
 
     except Exception as e:
         return f"Error en analisis: {e}"
-
 
 @app.route('/costos')
 def costos():
